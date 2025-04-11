@@ -78,13 +78,13 @@ func caloriesCalculationHelper(steps int, weight, height float64, duration time.
 
 func caloriesParameterCheckHelper(steps int, weight, height float64, duration time.Duration) error {
 	if steps <= 0 {
-		return fmt.Errorf("Step count must be positive")
+		return fmt.Errorf("Bad data: step count must be positive")
 	}
 	if weight <= 0 {
-		return fmt.Errorf("Weight must be positive")
+		return fmt.Errorf("Bad data: weight must be positive")
 	}
 	if height <= 0 {
-		return fmt.Errorf("Height must be positive")
+		return fmt.Errorf("Bad data: height must be positive")
 	}
 	if duration <= 0 {
 		return fmt.Errorf("Bad data: duration must be positive")
