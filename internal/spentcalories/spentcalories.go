@@ -72,35 +72,39 @@ func TrainingInfo(data string, weight, height float64) (string, error) {
 	return result, nil
 }
 
-func RunningSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
+func caloriesCalculationHelper(steps int, weight, height float64, duration time.Duration) float64 {
+	return weight * meanSpeed(steps, height, duration) * duration.Hours()
+}
+
+func caloriesParameterCheckHelper(steps int, weight, height float64, duration time.Duration) error {
 	if steps <= 0 {
-		return 0, fmt.Errorf("Step count must be positive")
+		return fmt.Errorf("Step count must be positive")
 	}
 	if weight <= 0 {
-		return 0, fmt.Errorf("Weight must be positive")
+		return fmt.Errorf("Weight must be positive")
 	}
 	if height <= 0 {
-		return 0, fmt.Errorf("Height must be positive")
+		return fmt.Errorf("Height must be positive")
 	}
 	if duration <= 0 {
-		return 0, fmt.Errorf("Bad data: duration must be positive")
+		return fmt.Errorf("Bad data: duration must be positive")
 	}
-	return weight * meanSpeed(steps, height, duration) * duration.Hours(), nil
+	return nil
+}
+
+func RunningSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
+	err := caloriesParameterCheckHelper(steps, weight, height, duration)
+	if err != nil {
+		return 0, err
+	}
+	return caloriesCalculationHelper(steps, weight, height, duration), nil
 }
 
 func WalkingSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
-	if steps <= 0 {
-		return 0, fmt.Errorf("Step count must be positive")
+	err := caloriesParameterCheckHelper(steps, weight, height, duration)
+	if err != nil {
+		return 0, err
 	}
-	if weight <= 0 {
-		return 0, fmt.Errorf("Weight must be positive")
-	}
-	if height <= 0 {
-		return 0, fmt.Errorf("Height must be positive")
-	}
-	if duration <= 0 {
-		return 0, fmt.Errorf("Bad data: duration must be positive")
-	}
-	calories, err := RunningSpentCalories(steps, weight, height, duration)
-	return  calories * walkingCaloriesCoefficient, err
+	calories := caloriesCalculationHelper(steps, weight, height, duration) * walkingCaloriesCoefficient
+	return  calories, nil
 }
