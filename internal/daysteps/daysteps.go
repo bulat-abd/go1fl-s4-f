@@ -20,21 +20,21 @@ const (
 func parsePackage(data string) (int, time.Duration, error) {
 	list := strings.Split(data, ",")
 	if len(list) != 2 {
-		return 0, time.Duration(0), fmt.Errorf("Bad format: only one comma allowed")
+		return 0, time.Duration(0), fmt.Errorf("Bad format: exactly one comma must be present, separating exactly two fields")
 	}
 	steps, err := strconv.Atoi(list[0])
 	if err != nil {
-		return 0, time.Duration(0), fmt.Errorf("Bad format: could not parse int before the comma")
+		return 0, time.Duration(0), fmt.Errorf("Bad format: could not parse int in the first field")
 	}
 	if steps <= 0 {
-		return 0, time.Duration(0), fmt.Errorf("Bad format: step count must be positive")
+		return 0, time.Duration(0), fmt.Errorf("Bad data: step count must be positive")
 	}
 	duration, err := time.ParseDuration(list[1])
 	if err != nil {
 		return 0, time.Duration(0), fmt.Errorf("Bad format: could not parse duration")
 	}
 	if duration <= 0 {
-		return 0, time.Duration(0), fmt.Errorf("Bad format: duration must be positive")
+		return 0, time.Duration(0), fmt.Errorf("Bad data: duration must be positive")
 	}
 	return steps, duration, nil
 }
