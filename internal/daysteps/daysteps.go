@@ -45,10 +45,6 @@ func DayActionInfo(data string, weight, height float64) string {
 		log.Println(err)
 		return ""
 	}
-	if steps <= 0 {
-		// redundant due to same check in parsePackage function
-		return ""
-	}
 	distance := float64(steps) * stepLength / mInKm
 	calories, err := spentcalories.WalkingSpentCalories(steps, weight, height, duration)
 	result := fmt.Sprintf(actionInfoFormat, steps, distance, calories)
