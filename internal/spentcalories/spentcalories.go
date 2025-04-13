@@ -72,11 +72,11 @@ func TrainingInfo(data string, weight, height float64) (string, error) {
 	return result, nil
 }
 
-func caloriesCalculationHelper(steps int, weight, height float64, duration time.Duration) float64 {
+func calculateCalories(steps int, weight, height float64, duration time.Duration) float64 {
 	return weight * meanSpeed(steps, height, duration) * duration.Hours()
 }
 
-func caloriesParameterCheckHelper(steps int, weight, height float64, duration time.Duration) error {
+func validateParams(steps int, weight, height float64, duration time.Duration) error {
 	if steps <= 0 {
 		return fmt.Errorf("bad data: step count must be positive")
 	}
@@ -93,18 +93,18 @@ func caloriesParameterCheckHelper(steps int, weight, height float64, duration ti
 }
 
 func RunningSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
-	err := caloriesParameterCheckHelper(steps, weight, height, duration)
+	err := validateParams(steps, weight, height, duration)
 	if err != nil {
 		return 0, err
 	}
-	return caloriesCalculationHelper(steps, weight, height, duration), nil
+	return calculateCalories(steps, weight, height, duration), nil
 }
 
 func WalkingSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
-	err := caloriesParameterCheckHelper(steps, weight, height, duration)
+	err := validateParams(steps, weight, height, duration)
 	if err != nil {
 		return 0, err
 	}
-	calories := caloriesCalculationHelper(steps, weight, height, duration) * walkingCaloriesCoefficient
+	calories := calculateCalories(steps, weight, height, duration) * walkingCaloriesCoefficient
 	return  calories, nil
 }
