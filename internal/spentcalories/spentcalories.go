@@ -25,14 +25,14 @@ func parseTraining(data string) (int, string, time.Duration, error) {
 	activity := fields[1]
 	steps, err := strconv.Atoi(fields[0])
 	if err != nil {
-		return 0, "", 0, fmt.Errorf("bad format: could not parse int in first field")
+		return 0, "", 0, fmt.Errorf("bad format: could not parse int in first field - %w", err)
 	}
 	if steps <= 0 {
 		return 0, "", 0, fmt.Errorf("bad data: step count must be positive")
 	}
 	duration, err := time.ParseDuration(fields[2])
 	if err != nil {
-		return 0, "", 0, fmt.Errorf("bad format: could not parse duration in third field")
+		return 0, "", 0, fmt.Errorf("bad format: could not parse duration in third field - %w", err)
 	}
 	if duration <= 0 {
 		return 0, "", 0, fmt.Errorf("bad data: duration must be positive")
