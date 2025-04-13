@@ -68,6 +68,9 @@ func TrainingInfo(data string, weight, height float64) (string, error) {
 		default:
 			return "", fmt.Errorf("неизвестный тип тренировки")
 	}
+	if err != nil {
+		return "", fmt.Errorf("bad data: error while calculating calories - %w", err)
+	}
 	result := fmt.Sprintf(trainingInfoFormat, activity, duration.Hours(), distance(steps, height), meanSpeed(steps, height, duration), calories)
 	return result, nil
 }
