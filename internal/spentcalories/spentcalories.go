@@ -20,22 +20,22 @@ const (
 func parseTraining(data string) (int, string, time.Duration, error) {
 	fields := strings.Split(data, ",")
 	if len(fields) != 3 {
-		return 0, "", time.Duration(0), fmt.Errorf("Bad format: there must be exactly two commas separating three fields")
+		return 0, "", 0, fmt.Errorf("Bad format: there must be exactly two commas separating three fields")
 	}
 	activity := fields[1]
 	steps, err := strconv.Atoi(fields[0])
 	if err != nil {
-		return 0, "", time.Duration(0), fmt.Errorf("Bad format: could not parse int in first field")
+		return 0, "", 0, fmt.Errorf("Bad format: could not parse int in first field")
 	}
 	if steps <= 0 {
-		return 0, "", time.Duration(0), fmt.Errorf("Bad data: step count must be positive")
+		return 0, "", 0, fmt.Errorf("Bad data: step count must be positive")
 	}
 	duration, err := time.ParseDuration(fields[2])
 	if err != nil {
-		return 0, "", time.Duration(0), fmt.Errorf("Bad format: could not parse duration in third field")
+		return 0, "", 0, fmt.Errorf("Bad format: could not parse duration in third field")
 	}
 	if duration <= 0 {
-		return 0, "", time.Duration(0), fmt.Errorf("Bad data: duration must be positive")
+		return 0, "", 0, fmt.Errorf("Bad data: duration must be positive")
 	}
 	return steps, activity, duration, nil
 
